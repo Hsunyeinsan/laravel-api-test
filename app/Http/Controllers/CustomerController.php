@@ -9,6 +9,7 @@ use App\Models\Customer;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class CustomerController extends Controller
 {
@@ -85,6 +86,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
+        Gate::authorize('view-customer',$customer);
         return response()->json([
                 "data"=>new CustomerResource($customer),
             ]);
