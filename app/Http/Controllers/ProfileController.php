@@ -13,10 +13,7 @@ class ProfileController extends Controller
 {
     public function show(Request $request)
     {
-        $user=$request->user();
-        return response()->json([
-            "data"=>new ProfileResource($user),
-        ]);
+        return new ProfileResource($request->user()); 
     }
     public function logout(Request $request)
     {

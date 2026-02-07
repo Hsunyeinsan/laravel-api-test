@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePhotoRequest;
 use App\Http\Requests\UpdatePhotoRequest;
+use App\Http\Resources\PhotoResource;
 use App\Models\Photo;
+use Illuminate\Support\Facades\Storage;
 
 class PhotoController extends Controller
 {
@@ -21,7 +23,13 @@ class PhotoController extends Controller
      */
     public function store(StorePhotoRequest $request)
     {
-        //
+        $url=Storage::put('/',$request->file('image'));
+        $photo=Photo::create(["url"=>$url]);
+        return response()->json([
+            "message"=>"Photo uploade succesfully",
+            "data"=>new PhotoResource($photo)
+        ]);
+
     }
 
     /**
@@ -43,8 +51,12 @@ class PhotoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Photo $photo)
+    public function destroy($url)
     {
-        //
+        Storage::delete($url);
+        Photo::where('url',$url)->delete();
+        return response()->json([
+            "message"=>"Photo delete successfully"
+        ]);
     }
 }

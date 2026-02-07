@@ -3,10 +3,17 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Jobs\SendWelcomeEmailJob;
+use App\Mail\WelcomeMail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\HasApiTokens;
+
+use function Symfony\Component\Clock\now;
 
 class User extends Authenticatable
 {
@@ -46,4 +53,22 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    protected static function booted()
+    {
+
+        // static::creating(function (){
+        //     Log::info("New User is Creating");
+        // });
+
+        // static::created(function ($user) {
+        //     // Log::info("New user created: " . $user->name);
+        //     // Mail::to($user->email)->send(
+        //     //     new WelcomeMail
+        //     // );
+
+        //     SendWelcomeEmailJob::dispatch($user)->delay(15);
+            
+        // });
+    }
+
 }

@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Models\Customer;
-use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
 
-class AuthorizationServiceProvider extends ServiceProvider
+class ObserverProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -21,8 +21,6 @@ class AuthorizationServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define("view-customer",function($user,Customer $customer){
-            return $user->id===$customer->user_id;
-        });
+        User::observe(UserObserver::class);
     }
 }
